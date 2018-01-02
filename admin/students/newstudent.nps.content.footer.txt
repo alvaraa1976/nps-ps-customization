@@ -1,0 +1,35 @@
+<script type="text/javascript">
+    $j(document).ready(function(){
+        var sTabs = '<ul class="tabs"><li><a href="/admin/students/districtwidestudentsearch.html">District Search</a></li><li class="selected"><a href="/admin/students/newstudent.html">Enroll New Student</a></li></ul>';
+        $j('#last').parent().parent().parent().parent().before(sTabs);
+    
+        /*remove the student number text box and replace it with some text. NPS prefers not to give the user the option of manually entering a student number*/
+        var sStudentNumberFieldText = '<td><input type="hidden" name="student_number"  value="">The system will assign the Student Number</td>';
+        $j('#fieldStuNum').parent().replaceWith(sStudentNumberFieldText);
+        
+        /*remove the Social Security Number field. NPS prefers not to expose this field*/
+        $j('#fieldSSN').parent().parent().remove();
+        
+        /*remove the Track field. NPS prefers not to expose this field*/
+        $j('select[name=track]').parent().parent().remove();
+        
+        /*remove the Fee Exempt Status field. NPS prefers not to expose this field*/
+        $j('#selectFeeExemptStatus').parent().parent().remove();
+        
+        /*remove the Family Match section.*/
+        $j('input[name=doLink]').parent().parent().prev().prev().remove();
+        $j('input[name=doLink]').parent().parent().prev().remove();
+        $j('input[name=doLink]').parent().parent().remove();
+        $j('input[name=FamilyID_T]').parent().parent().remove();
+        $j('input[name=MomsName_t]').parent().parent().remove();
+        $j('input[name=DadsName_t]').parent().parent().remove();
+        $j('input[name=MomsName_t]').parent().parent().remove();
+        $j('input[name=GuardianLastName_t]').parent().parent().remove();
+        $j('input[name=SiblingLastName_t]').parent().parent().remove();
+        $j('#includeStudentLastName').parent().parent().remove();
+        
+        /*add the Salesforce ID, also called NEN*/
+        var sSalesForceElement = '<tr bgcolor="#edf3fe"><td class="bold">SalesForce ID (NEN)</td><td><input type="text" name="[U_DEF_EXT_STUDENTS]SALESFORCE_ID" value="" size="10" maxlength="10" id="salesforce_id"';
+        $j('#fieldHomePhone').parent().parent().before(sSalesForceElement);
+    });
+</script>

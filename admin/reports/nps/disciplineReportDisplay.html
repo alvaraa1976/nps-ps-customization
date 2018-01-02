@@ -1,0 +1,263 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Monthly Discipline Report</title>
+<link href="/images/powerschool.css" rel="stylesheet">
+
+</head>
+<body>
+<table width="100%">
+<tbody>
+<tr>
+<td align="left" width="150"><a href=/admin/home.html>
+<img src ="/admin/reports/nps/Include/NPSLogo.jpg" border="0">
+</a>Click on the Seal to return to PowerSchool</td>
+<td align="center"><b>Newark Public Schools<br>Discipline Report: ~[gpv:startdate] - ~[gpv:enddate]<br>
+~(SchoolName)</b></td>
+<td width="150">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<br>
+<table border="1" cellspacing="0" cellpadding="0">
+  <tr>
+    <th>Row</th>
+    <th>Sch<br>Num</th>
+    <th>Stat</th>
+    <th>Leave Date</th>
+    <th>Student<br>ID</th>
+    <th>Last<br>Name</th>
+    <th>First<br>Name</th>
+    <th>Grade</th>
+    <th>Ethn<br>Code</th>
+    <th>SpEd</th>
+    <th>LEP</th>
+    <th>Loc</th>
+    <th>Incident<br>Date</th>
+    <th>Incident<br>Timeframe</th>
+    <th>DisCod</th>
+    <th>Discipline<br>Description</th>
+    <th>Restorative Response I</th>
+    <th>Restorative Response II</th>
+    <th>Restorative Response III</th>
+    <th>#<br>Days</th>
+  </tr>
+  ~[tlist_sql;
+  
+SELECT ROW_NUMBER() OVER(ORDER BY l.Discipline_IncidentDate
+) AS Row#,    
+       l.schoolid,
+       CASE s.enroll_status
+        WHEN 0 THEN 'A'
+        ELSE 'I'
+       END as status,
+       to_char(s.exitdate,'mm/dd/yy'), s.student_number, s.last_name, s.first_name, s.grade_level, s.ethnicity,
+       ps_customfields.getstudentsCF (s.id, 'Special_Education') as special_education,
+       ps_customfields.getstudentsCF (S.id, 'ELL') as lep,
+       l.Discipline_IncidentLocation,
+       to_char(l.Discipline_IncidentDate,'mm/dd/yy'), 
+       CASE l.Discipline_IncidentContext
+        WHEN 'D' THEN 'During School Hours'
+        WHEN 'T' THEN 'During Transitions'
+        WHEN 'S' THEN 'Outside School Hours, at a School Activity'
+        WHEN 'N' THEN 'Outside School Hours, NOT at a School Activity'
+       END as timeframe,
+       l.subtype,
+       CASE l.subtype
+        WHEN 'HIBL1' THEN 'Harass/Intimid/Bully'
+        WHEN 'HIBL2' THEN 'HIB(Continuation)'
+        WHEN 'HIBL3' THEN 'HIB(cont. Threats)'
+        WHEN 'HIBL4' THEN 'JIB(Threats)'
+        WHEN 'L1A' THEN 'Disrupt Behavior'
+        WHEN 'L1B' THEN 'No longer used'
+        WHEN 'L1C' THEN 'Cheating'
+        WHEN 'L1D' THEN 'Incomp Assign'
+        WHEN 'L1E' THEN 'Fail to Fol Ins'
+        WHEN 'L1F' THEN 'Wearing Hats'
+        WHEN 'L1G' THEN 'No longer used'
+        WHEN 'L1H' THEN 'Fail to Wear ID'
+        WHEN 'L2A' THEN 'Profa/OffenLanguage'
+        WHEN 'L2B' THEN 'Cont L1 Behav'
+        WHEN 'L2C' THEN 'Unexcused/ExcessTard'
+        WHEN 'L2D' THEN 'Cutting Class/Truancy'
+        WHEN 'L2E' THEN 'Smokng/Schl Pro'
+        WHEN 'L2F' THEN 'Forged Notes'
+        WHEN 'L2G' THEN 'Scholast Dishon'
+        WHEN 'L2H' THEN 'No longer used'
+        WHEN 'L2I' THEN 'No longer used'
+        WHEN 'L2J' THEN 'Use of Music Devices'
+        WHEN 'L2K' THEN 'No longer used'
+        WHEN 'L2L' THEN 'Gang Apparel'
+        WHEN 'L2M' THEN 'Sexual Contact'
+        WHEN 'L2N' THEN 'Defamation'
+        WHEN 'L2O' THEN 'Indecent Exposure'
+        WHEN 'L2P' THEN 'Defy Auth Sch Persnl'
+        WHEN 'L2Q' THEN 'Leave Sch wo/Prmsn'
+        WHEN 'L2R' THEN 'No longer used'
+        WHEN 'L2S' THEN 'Bus Violatn (Minor)'
+        WHEN 'L2T' THEN 'Walk-out/Sit-in'
+        WHEN 'L2U' THEN 'Unauth Sale/Dis Mtrl'
+        WHEN 'L2V' THEN 'Impr Urin/Defacation'
+        WHEN 'L2W' THEN 'Instigation'
+        WHEN 'L2X' THEN 'Tech Policy Violatn'
+        WHEN 'L31' THEN 'Gang Apparal'
+        WHEN 'L3A' THEN 'Alcohol'
+        WHEN 'L3B' THEN 'Gambling'
+        WHEN 'L3C' THEN 'Graffiti'
+        WHEN 'L3D' THEN 'Fighting'
+        WHEN 'L3E' THEN 'Vandalism'
+        WHEN 'L3F' THEN 'Stealing'
+        WHEN 'L3G' THEN 'Threat to Other'
+        WHEN 'L3H' THEN 'Cont. Dis Behav'
+        WHEN 'L3I' THEN 'Smoke/Schl Prop'
+        WHEN 'L3J' THEN 'No longer used'
+        WHEN 'L3K' THEN 'No longer used'
+        WHEN 'L3L' THEN 'Chronic Absent'
+        WHEN 'L3M' THEN 'Chronic Truancy'
+        WHEN 'L3N' THEN 'Extreme Defianc'
+        WHEN 'L3O' THEN 'HarassmentG,R,E'
+        WHEN 'L3P' THEN 'Hrssmnt Sx/Assl'
+        WHEN 'L3Q' THEN 'Beepers'
+        WHEN 'L3R' THEN 'Cell Phone'
+        WHEN 'L3S' THEN 'No longer used'
+        WHEN 'L3T' THEN 'Contaminate Food'
+        WHEN 'L3U' THEN 'Harr/Intm/Bullying'
+        WHEN 'L3V' THEN 'Pos Fireworks'
+        WHEN 'L3W' THEN 'Reckless Endgmt'
+        WHEN 'L3X' THEN 'Pos/Use/Dist Meds'
+        WHEN 'L3Y' THEN 'Trespassing'
+        WHEN 'L3Z' THEN 'False Alarm'
+        WHEN 'L4A' THEN 'Weapons'
+        WHEN 'L4B' THEN 'Pull Fire Alarm'
+        WHEN 'L4C' THEN 'L3 MisCond Cont'
+        WHEN 'L4D' THEN 'Extortion'
+        WHEN 'L4E' THEN 'Bomb Threat'
+        WHEN 'L4F' THEN 'Stolen Prop/T/P'
+        WHEN 'L4G' THEN 'Danger Weap P/U'
+        WHEN 'L4H' THEN 'Asslt and Battery'
+        WHEN 'L4I' THEN 'Arson'
+        WHEN 'L4J' THEN 'Alcohol P/Use'
+        WHEN 'L4K' THEN 'Illegal Substan'
+        WHEN 'L4L' THEN 'No longer used'
+        WHEN 'L4M' THEN 'Attack on Staff'
+        WHEN 'L4N' THEN 'Biohazard Mtris'
+        WHEN 'L4O' THEN 'Explosives'
+        WHEN 'L4P' THEN 'Vand/Dstcn $500'
+        WHEN 'L4Q' THEN 'Cell Ph/Crime'
+        WHEN 'L4R' THEN 'Terroristic Threats'
+        WHEN 'L4S' THEN 'Sexual Assault'
+        ELSE l.subtype
+       END as subtype_desc,
+    CASE l.consequence
+        WHEN 'L1DA' THEN 'L1DA - Verbal Reprimand'
+        WHEN 'L1DB' THEN 'L1DB - Behavioral Contract'
+        WHEN 'L1DC' THEN 'L1DC - TeacherStudentConf'
+        WHEN 'L1DD' THEN 'L1DD - Loss of Privileges'
+        WHEN 'L1DE' THEN 'L1DE - Behavioral Adj Prgrm'
+        WHEN 'L1DG' THEN 'L1DG - Family Conference'
+        WHEN 'L1DH' THEN 'L1DH - Peer Mediation'
+        WHEN 'L1DI' THEN 'L1DI - Community Mediation'
+        WHEN 'L1DJ' THEN 'L1DJ - Peer Counseling'
+        WHEN 'L1DK' THEN 'L1DK - SEL Assignment'
+        WHEN 'L1DL' THEN 'L1DL - ContParnt-CalNoAvail'
+        WHEN 'L1DM' THEN 'L1DM - ContParnt-Cal/Avail'
+        WHEN 'L1DN' THEN 'L1DN - ContParnt-Email/Text'
+        WHEN 'L1DO' THEN 'L1DO - ContParnt-BackpckLtr'
+        WHEN 'L1DP' THEN 'L1DP - WriteReflectn/Apolgy'
+        WHEN 'L1DQ' THEN 'L1DQ - ClassCommunityConf'
+        WHEN 'L1DR' THEN 'L1DR - Conflict Resolution'
+        WHEN 'L1DS' THEN 'L1DS - Restorative Circle'
+        WHEN 'L1DT' THEN 'L1DT - Community Service'
+        WHEN 'L1DU' THEN 'L1DU - Restorative Conf'
+        WHEN 'L1DV' THEN 'L1DV - HIB Referral'
+        WHEN 'L1DW' THEN 'L1DW - ServLearningProject'
+        WHEN 'L1DX' THEN 'L1DX - Refer-SubstAwarePrgm'
+       END as Rest_RespI,
+       CASE l.Discipline_IncidentLocDetail
+        WHEN 'L1DA' THEN 'L1DA - Verbal Reprimand'
+        WHEN 'L1DB' THEN 'L1DB - Behavioral Contract'
+        WHEN 'L1DC' THEN 'L1DC - TeacherStudentConf'
+        WHEN 'L1DD' THEN 'L1DD - Loss of Privileges'
+        WHEN 'L1DE' THEN 'L1DE - Behavioral Adj Prgrm'
+        WHEN 'L1DG' THEN 'L1DG - Family Conference'
+        WHEN 'L1DH' THEN 'L1DH - Peer Mediation'
+        WHEN 'L1DI' THEN 'L1DI - Community Mediation'
+        WHEN 'L1DJ' THEN 'L1DJ - Peer Counseling'
+        WHEN 'L1DK' THEN 'L1DK - SEL Assignment'
+        WHEN 'L1DL' THEN 'L1DL - ContParnt-CalNoAvail'
+        WHEN 'L1DM' THEN 'L1DM - ContParnt-Cal/Avail'
+        WHEN 'L1DN' THEN 'L1DN - ContParnt-Email/Text'
+        WHEN 'L1DO' THEN 'L1DO - ContParnt-BackpckLtr'
+        WHEN 'L1DP' THEN 'L1DP - WriteReflectn/Apolgy'
+        WHEN 'L1DQ' THEN 'L1DQ - ClassCommunityConf'
+        WHEN 'L1DR' THEN 'L1DR - Conflict Resolution'
+        WHEN 'L1DS' THEN 'L1DS - Restorative Circle'
+        WHEN 'L1DT' THEN 'L1DT - Community Service'
+        WHEN 'L1DU' THEN 'L1DU - Restorative Conf'
+        WHEN 'L1DV' THEN 'L1DV - HIB Referral'
+        WHEN 'L1DW' THEN 'L1DW - ServLearningProject'
+        WHEN 'L1DX' THEN 'L1DX - Refer-SubstAwarePrgm'
+       END as Rest_RespII,
+       CASE l.Discipline_IncidentType
+        WHEN 'L1DA' THEN 'L1DA - Verbal Reprimand'
+        WHEN 'L1DB' THEN 'L1DB - Behavioral Contract'
+        WHEN 'L1DC' THEN 'L1DC - TeacherStudentConf'
+        WHEN 'L1DD' THEN 'L1DD - Loss of Privileges'
+        WHEN 'L1DE' THEN 'L1DE - Behavioral Adj Prgrm'
+        WHEN 'L1DG' THEN 'L1DG - Family Conference'
+        WHEN 'L1DH' THEN 'L1DH - Peer Mediation'
+        WHEN 'L1DI' THEN 'L1DI - Community Mediation'
+        WHEN 'L1DJ' THEN 'L1DJ - Peer Counseling'
+        WHEN 'L1DK' THEN 'L1DK - SEL Assignment'
+        WHEN 'L1DL' THEN 'L1DL - ContParnt-CalNoAvail'
+        WHEN 'L1DM' THEN 'L1DM - ContParnt-Cal/Avail'
+        WHEN 'L1DN' THEN 'L1DN - ContParnt-Email/Text'
+        WHEN 'L1DO' THEN 'L1DO - ContParnt-BackpckLtr'
+        WHEN 'L1DP' THEN 'L1DP - WriteReflectn/Apolgy'
+        WHEN 'L1DQ' THEN 'L1DQ - ClassCommunityConf'
+        WHEN 'L1DR' THEN 'L1DR - Conflict Resolution'
+        WHEN 'L1DS' THEN 'L1DS - Restorative Circle'
+        WHEN 'L1DT' THEN 'L1DT - Community Service'
+        WHEN 'L1DU' THEN 'L1DU - Restorative Conf'
+        WHEN 'L1DV' THEN 'L1DV - HIB Referral'
+        WHEN 'L1DW' THEN 'L1DW - ServLearningProject'
+        WHEN 'L1DX' THEN 'L1DX - Refer-SubstAwarePrgm'
+       END as Rest_RespIII, l.Discipline_DurationAssigned
+FROM Students s
+  INNER JOIN Log l ON l.studentid = s.id
+WHERE l.LogTypeID = -100000
+  AND l.schoolid = ~(curschoolid)
+  AND l.Discipline_IncidentDate between to_date('~[gpv:startdate]','mm/dd/yyyy') AND to_date('~[gpv:enddate]','mm/dd/yyyy')
+
+
+  ]
+  <tr>
+    <td align="center">~(Row#;t)</td>
+    <td align="center">~(l.schoolid;t)</td>
+    <td align="center">~(s.enroll_status;t)</td>
+    <td align="center">~(s.exitdate;t)</td>
+    <td align="center">~(s.student_number;t)</td>
+    <td align="center">~(s.last_name;t)</td>
+    <td align="center">~(s.first_name;t)</td>
+    <td align="center">~(s.grade_level;t)</td>
+    <td align="center">~(s.ethnicity;t)</td>
+    <td align="center">~(special_education;t)</td>
+    <td align="center">~(lep;t)</td>
+    <td align="center">~(l.Discipline_IncidentLocation;t)</td>
+    <td align="center">~(l.Discipline_IncidentDate;t)</td>
+    <td align="left">~(timeframe;t)</td>
+    <td align="center">~(l.subtype;t)</td>
+    <td align="center">~(subtype_desc;t)</td>
+    <td align="left">~(Rest_RespI;t)</td>
+    <td align="left">~(Rest_RespII;t)</td>
+    <td align="left">~(Rest_RespIII;t)</td>
+    <td align="center">~(l.Discipline_DurationAssigned;t)</td>
+  </tr>
+  [/tlist_sql]
+
+
+</table>
+<br>
+
+</body>
+</html>

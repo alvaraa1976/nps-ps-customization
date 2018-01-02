@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<!-- non framed -->
+<head>
+    <title>~[text:psx.html.admin_students.newstudent.enroll_new_student]</title>
+
+
+        <!--
+        headerrow {
+            border-width: 1pt;
+        }
+        -->
+    </style>
+    ~[wc:UI_js_includes]
+    ~[wc:commonscripts]
+    <link href="/images/css/screen.css" rel="stylesheet" media="screen">
+<link href="/images/css/print.css" rel="stylesheet" media="print">
+    <script type="text/javascript">
+        <!--
+        function updatecheckbox()
+        {
+            var putnamehere = document.getElementById("insertlastnamehere");
+            if (putnamehere !== null)
+            {
+                var lastname = document.getElementById('last').value;
+                var newval = "";
+                if (lastname !== "")
+                {
+                    newval = "(" + lastname + ")";
+                }
+
+                putnamehere.innerHTML = newval;
+            }
+        }
+        //-->
+    </script>
+
+    <!-- TODO: marsmc begin -->
+    <script type="text/javascript">
+        var selectedAdapter = "~[displaypref:mappingadapter.selected]";
+        var mapKey = "~[x:selectedmappingadapterkey]";
+        var addrType="p";
+    </script>
+    ~[x:renderboundaryobject]
+
+    <!--<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;~[x:selectedmappingadapterkey]" type="text/javascript"></script>-->
+    ~[get_js_texts:psx.js.admin_validation.validationCommon.]
+    <script language="JavaScript" src="/admin/validation/validationCommon.js"></script>
+	<script language="JavaScript" src="/admin/JavaScript/phoneNumber.js"></script>	
+</head>
+
+<body>
+
+<form id="studentEnrollmentForm" action="checkduplicatestudents.html" onsubmit="return validateStudentEnrollment()" method="POST">
+~[wc:admin_header_css]<!-- breadcrumb start --><a href="/admin/home.html" target="_top">~[text:psx.html.admin_students.newstudent.start_page]</a> &gt; <a
+        href="/admin/functions.html" target="_top">~[text:psx.html.admin_students.newstudent.special_functions]</a> &gt;~[text:psx.html.admin_students.newstudent.enroll_new_student1]<!-- breadcrumb end -->
+~[wc:admin_navigation_css]
+
+<h1>~[text:psx.html.admin_students.newstudent.enroll_new_student2]</h1>
+<ul class="feedback-alert">
+<li id="last_name_required_error">~[text:psx.html.admin_students.newstudent.you_did_not_enter_a_name_for_this_student]</li>
+<li id="grade_level_required_error">~[text:psx.html.admin_students.newstudent.you_did_not_enter_a_grade_level_for_this_student]</li>
+<li id="invalid_enrollment_date_error">~[text:psx.html.admin_students.newstudent.you_did_not_enter_an_enrollment_date]</li>
+<li id="invalid_fte_error">~[text:psx.html.admin_students.newstudent.you_must_select_a_fulltime_equivalency]</li>
+</ul>
+ <script type="text/javascript">
+	 function hideErrors(){
+	 	$j('#last_name_required_error').hide();
+	 	$j('#grade_level_required_error').hide();
+	 	$j('#invalid_enrollment_date_error').hide();
+	 	$j('#invalid_fte_error').hide();
+	 }
+     hideErrors();
+ </script>
+<!-- start of content and bounding box -->
+<!-- start of tabs -->
+
+<!--Try without this <table border="0" cellspacing="0" cellpadding="0" align="center" class="tab_table">
+    <tr>
+        <td width="28"><img src="https://sisimg.nps.k12.nj.us/psimages/images/spacer.gif" border="0" alt="" width="1" height="15" /></td>
+        <td class="tab_td_empty" width="5"><img src="https://sisimg.nps.k12.nj.us/psimages/images/spacer.gif" border="0" alt="" width="1" height="15" /></td>
+        <td class="tab_td_sel">
+            <div class="tab_outter_sel">
+                <div class="tab_content_sel">Enroll New Student</div>
+            </div>
+        </td>
+        <td class="tab_end_sel"><img src="https://sisimg.nps.k12.nj.us/psimages/images/spacer.gif" width="4" height="15" /></td>
+        <td class="tab_td ">
+            <div class="tab_outter">
+                <div class="tab_content">                    
+                    <a href="/admin/students/districtwidestudentsearch.html">District Search</a></div>
+            </div>
+        </td>
+        <td class="tab_end"><img src="https://sisimg.nps.k12.nj.us/psimages/images/spacer.gif" width="4" height="15" /></td>
+        <td class="tab_shadow"><img src="https://sisimg.nps.k12.nj.us/psimages/images/spacer.gif" width="1" height="10" /></td>
+        <td class="tab_td_empty" width="*"><img src="https://sisimg.nps.k12.nj.us/psimages/images/spacer.gif" border="0" alt="" width="1" height="15" /></td>
+        <td width="31"><img src="https://sisimg.nps.k12.nj.us/psimages/images/spacer.gif" border="0" alt="" width="31" height="15" /></td>
+
+    </tr>
+</table>-->
+
+<div class="box-round">
+<ul class="tabs">
+	<li><a href="/admin/students/districtwidestudentsearch.html">District Search</a></li>
+	<li class="selected"><a href="/admin/students/newstudent.html">Enroll New Student</a></li>
+</ul>
+
+			<table border="0" cellspacing="0" cellpadding="4" width="600">
+                <tr class="headerrow">
+                    <td colspan="2" class="bold">~[text:psx.html.admin_students.newstudent.student_information]</td>
+                </tr>
+                <tr bgcolor="#edf3fe">
+                    <td class="bold">~[text:psx.html.admin_students.newstudent.students_name]<br>~[text:psx.html.admin_students.newstudent.last_first_mi]</td>
+                    <td>
+                        <input type="text" ~[getValidation:students.last_name] name="last" id="last" value="" size="17" maxlength="20" onBlur="updatecheckbox()">,
+                        <input type="text" ~[getValidation:students.first_name]name="first" id ="first" value="" size="17" maxlength="20">
+                        <input type="text" ~[getValidation:students.middle_name] name="middle" id="middle" value="" size="15" maxlength="15">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="bold">~[text:psx.html.admin_students.newstudent.dob]</td>
+                    <td><input type="text" ~[getValidation:students.dob] name="DOB" value="" size="10"></td>
+                </tr>
+                <tr bgcolor="#edf3fe">
+                    <td class="bold">~[text:psx.html.admin_students.newstudent.student_number]</td>
+                    <td><input type="hidden" name="student_number"  value="">The system will assign the Student Number
+                    </td>
+                </tr>
+
+ <tr>
+					<td class="bold">~[text:psx.html.admin_students.newstudent.gender]</td>
+					<td><select id="selectGender" name="gender" ~[getValidation:students.gender]>
+						<option value="">
+						<option value="M">~[text:psx.html.admin_students.newstudent.male]<option value="F">~[text:psx.html.admin_students.newstudent.female]</select></td>
+				</tr>
+
+
+                <!--<tr>
+                    <td class="bold">~[text:psx.html.admin_students.newstudent.social_security_number]</td>
+                    <td><input type="text" name="SSN" ~[getValidation:students.ssn] value="" size="17"></td>
+                </tr>-->
+                <tr bgcolor="#edf3fe">
+                    <td class="bold">~[text:psx.html.admin_students.newstudent.phone_number]</td>
+                    <td><input type="text" ~[getValidation:students.home_phone] name="Phone" value="" size="17" onChange="ValidatePhoneNumber('Phone');"></td>                    
+                </tr>
+                <tr>
+                    <td class="bold">~[text:psx.html.admin_students.newstudent.enrollment_date]</td>
+                    <td><input type="text" ~[getValidation:students.entrydate] name="entrydate" id="entrydate" value="~[short.date]" size="10"></td>
+                </tr>
+                <tr bgcolor="#edf3fe">
+                    <td class="bold">~[text:psx.html.admin_students.newstudent.fulltime_equivalency]</td>
+                    <td>~[if.district.office]~[text:psx.html.admin_students.newstudent.fte_selection_can_only_occur_within_a_______________________][else]~[custompopup;name=fteid;list=att_ftegetlist][/if.district.office]
+                    </td>
+                </tr>
+                <tr>
+                    <td class="bold">~[text:psx.html.admin_students.newstudent.grade_level]</td>
+                    <td>~[custompopup;name=grade_level;list=gradelevels]</td>
+                </tr>
+                <tr bgcolor="#edf3fe">
+                    <td class="bold">~[text:psx.html.admin_students.newstudent.entry_code]</td>
+                    <td>~[custompopup.entrycodes.lists.entrycodes]</td>
+                </tr>
+                <!--<tr>
+                    <td class="bold">~[text:psx.html.admin_students.newstudent.track]</td>
+                    <td>~[custompopup;name=track;list=tracks.blank]</td>
+                </tr>-->
+                <tr bgcolor="#edf3fe">
+                    <td class="bold"><a href="/admin/districts/" target="_top">~[text:psx.html.admin_students.newstudent.district_of_residence]</a></td>
+                    <td>~[custompopup;name=districtofresidence;list=lists.districts]</td>
+
+
+                    <!-- TODO: marsmc start-->
+                    <script type="text/javascript">
+                        YAHOO.namespace ("powerschool");
+
+                        function attachDistrictBehaviors()
+                        {
+                            YAHOO.util.Event.addListener(document.forms[0].elements["districtofresidence"], 'change', reCheckBoundaries);
+                        }
+
+                        YAHOO.util.Event.addListener( window, 'load', attachDistrictBehaviors );
+
+                        function reCheckBoundaries()
+                        {
+                            displayMembershipIconsNewEnrollment("pgeocode");
+                        }
+                    </script>
+                    <!-- TODO: marsmc end-->
+                </tr>
+                <!--<tr>
+                    <td class="bold">~[text:psx.html.admin_students.newstudent.fee_exemption_status]</td>
+                    <td><select name="Fee_Exemption_Status">
+                        <option value="0">~[text:psx.html.admin_students.newstudent.student_not_exempted]<option value="1">~[text:psx.html.admin_students.newstudent.student_exempted_from_course_fees]<option value="2">~[text:psx.html.admin_students.newstudent.student_exempted_from_school_fees]<option value="3">~[text:psx.html.admin_students.newstudent.student_exempted_from_all_fees]</select></td>
+                </tr>-->
+                <tr bgcolor="#edf3fe">
+                    <td class="bold">~[text:psx.html.admin_students.newstudent.school]</td>
+                    <td>~[schoolname]</td>
+                </tr>
+
+                <!-- Start insert state specific log information -->
+                ~[x:insertfile;state/newstudent~[displaypref:districtstate].html]
+                <!-- End insert state specific log information -->
+
+                        <!-- Family Management Starts Here -->
+                        <!--~[if.module.fmly]
+                        ~[wc:FMLY_EnrollData]
+                        [/if.module.fmly]-->
+                        <!-- Family Management Ends Here -->
+
+               <!-- TODO: beginning of address validation -->
+                <tr bgcolor="#f6f6f6">
+                    <td colspan="2" class="bold">~[text:psx.html.admin_students.newstudent.home_address]</td>
+                </tr>
+                <tr bgcolor="#edf3fe">
+                    <td class="bold">
+<!-- [text:psx.html.admin_students.newstudent.street_aptsuite] --> Street</td>
+                    <td>
+                        <input type="text" ~[getValidation:students.street] name="Street_t" size="45" id="pstreet" value="">
+                    <!--    <input type="text" name="" value="" size="10" id="papt"> -->
+                    </td>
+                </tr>
+                <tr>
+                    <td class="bold">~[text:psx.html.admin_students.newstudent.city_state_zip]</td>
+                    <td>
+                        <input type="text" ~[getValidation:students.city] name="City_t" value="Newark" size="30" id="pcity">
+                        <input type="text" ~[getValidation:students.state] name="State_t" value="~[displaypref:districtstate]" size="2" id="pstate">
+                        <input type="text" ~[getValidation:students.zip] name="Zip_t" value="" size="10" id="pzip">
+
+                        <input type="hidden" name="orig_street" value="" id="orig_pstreet">
+                        <input type="hidden" name="orig_city" value="" id="orig_pcity">
+                        <input type="hidden" name="orig_state" value="~[displaypref:districtstate]" id="orig_pstate">
+                        <input type="hidden" name="orig_zip" value="" id="orig_pzip">
+
+                        <input type="hidden" value="" id="lastName">
+                        <input type="hidden" value="" id="firstName">
+                        <input type="hidden" value="" id="middleName">
+                        <input type="hidden" value="true" id="performingEnrollment">
+                        <input type="hidden" id="enrollmentSchoolName" value="~[x:schoolname]"/>
+                    </td>
+                </tr>
+
+                ~[if.~[displaypref:mappingadapter.selected]=""]
+                [else]
+                    <tr bgcolor="#edf3fe">
+                        <td class="bold">~[text:psx.html.admin_students.newstudent.geocode]</td>
+                        <td>
+                            <input type="hidden" name="Geocode_t" value="" id="pgeocode" size="40">
+
+                            <div id="pgeocodehtml"></div>
+                            <div id="boundaryIconDiv"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="button" id="validatePrimaryAddress" value="~[textq:psx.html.admin_students.newfees.validate]" onclick="doValidate()">
+                        </td>
+                    </tr>
+                [/if]
+
+                <script type="text/javascript">
+
+                    function doValidate()
+                    {
+                        document.getElementById("lastName").value = document.getElementById("last").value;
+                        document.getElementById("firstName").value = document.getElementById("first").value;
+                        document.getElementById("middleName").value = document.getElementById("middle").value;
+                        openValidationWindow('p');
+                    }
+
+                    function validateStudentEnrollment(){
+                    	hideErrors();
+                    	var validated = true;
+                        var last = $j('#last').val();
+                    	if(($j.trim(last)).length == 0){
+                    		showError('#last_name_required_error');
+                    		validated = false;
+                    	}
+                    	var gradeLevel = $j('select[name="grade_level"]').val();
+                    	if(($j.trim(gradeLevel)).length == 0){
+                    		showError('#grade_level_required_error');
+                    		validated = false;
+                    	}
+                     
+                     
+                    	var entryDate = $j('#entrydate').val();
+                    	if(($j.trim(entryDate)).length == 0){
+                        	showError('#invalid_enrollment_date_error')
+                        	validated = false;
+                    	}
+                    	
+                    	
+
+                    	var fteId = $j('select[name="fteid"]').val();
+                    	if(($j.trim(fteId)).length == 0 || fteId == "0"){
+                    		showError('#invalid_fte_error')
+                    		validated = false;
+                    	}
+
+                    	if(validated){
+                    		loadingDialog();
+                    		joinApartment(); //always returns true
+                    		return validated;
+                    	}
+                    	else{
+	                    	$j(document).scrollTop(0);
+	                    	return validated;
+                    	}
+                    	
+                    }
+                     
+	                 
+	                 function showError(errorId){
+	                    	$j(errorId).show();
+	                 }
+                </script>
+                <!-- TODO: end of address validation -->            
+
+
+			</table>
+        <div class="button-row"><input type="hidden" name="ac" value="eEnrollCheckDup"><input type="hidden" name="dupchecktype" value="enroll"><input type="hidden" name="doftevalidation">~[submitbutton]</div>
+</div>
+<br>
+<!-- end of content of bounding box -->
+
+~[wc:admin_footer_css]
+</form>
+~[if.~[displaypref:mappingadapter.selected]=""]
+[else]
+<script type="text/javascript">
+    addYuiButton("validatePrimaryAddress", doValidate);
+</script>
+[/if]
+</body>
+</html><!-- non framed -->

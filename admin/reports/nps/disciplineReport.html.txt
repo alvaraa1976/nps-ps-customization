@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<!-- non framed -->
+<head>
+<title>Discipline Report</title>
+
+~[wc:commonscripts]
+<link href="/images/css/screen.css" rel="stylesheet" media="screen">
+<link href="/images/css/print.css" rel="stylesheet" media="print">
+</head>
+
+<body marginwidth=12 marginheight=12 topmargin=12 leftmargin=12 bgcolor="#ffffff">
+
+~[wc:admin_header_css]<!-- breadcrumb start --><a href="/admin/home.html" target="_top">Start Page</a> &gt; <a href="/admin/reports/home.html">Reports</a> &gt; <a href="/admin/reports/runreports.html">Run Reports</a> &gt;Discipline Report<!-- breadcrumb end -->~[wc:admin_navigation_css]
+
+~[tlist_sql;SELECT dcid from schools where school_number = ~(curschoolid)]
+  <script type="text/javascript">var DCID = ~(dcid;l);</script>
+[/tlist_sql]
+
+<script type="text/javascript">document.write("<form name=\"disciplinereportform\" action=\"/admin/reports/nps/disciplineReportDisplay.html?frn=039"+DCID+"\" method=\"POST\">" );</script>
+
+<!-- start of title -->
+
+<h1 class="header">Discipline Report</h1>
+
+<!-- end of title -->
+
+<!-- start of bounding box -->
+<div class="box-round">
+<!-- start of content -->
+<table border="0" cellspacing="0" cellpadding="4">
+
+<tr class="~[evenoddrow]">
+	<td class="bold">Start Date</td>
+	<td><input type="text" name="startdate" value="" size="11" class="psDateWidget"></td>
+</tr>
+<tr class="~[evenoddrow]">
+	<td class="bold">End Date</td>
+	<td><input type="text" name="enddate" value="" size="11" class="psDateWidget"></td>
+</tr>
+
+
+</table>
+
+<!-- end of content -->
+
+<div class="button-row"><input type="hidden" name="ac" value="prim">~[submitbutton]</div>
+</div>
+<br>
+<!-- end of bounding box -->
+</form>
+
+~[wc:admin_footer_css]
+
+</body>
+</html><!-- non framed -->
