@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Enrollment</title>
+      ~[wc:commonscripts]
+<link href="/images/css/screen.css" rel="stylesheet" media="screen">
+<link href="/images/css/print.css" rel="stylesheet" media="print">
+  </head>
+  <body>
+    <form action="/admin/changesrecorded.white.html" method="POST">~[wc:admin_header_frame_css]
+      <a href="/admin/home.html">Start Page</a> &gt;
+      <a>Student Selection</a> &gt; Student Enrollment~[wc:admin_navigation_frame_css]~[wc:title_student_begin_css]Student Enrollment~[wc:title_student_end_css]
+      <br>
+            <!---start of content-->
+<div class="box-round">
+<table>
+              <tr bgcolor="#E8E8E8">
+                <td colspan="3" class="bold">School:&nbsp;&nbsp;&nbsp;&nbsp;~([39]name)&nbsp;&nbsp;-&nbsp;&nbsp;~([39]school_number)</td>
+              </tr>
+              <tr bgcolor="#edf3fe">
+                <td colspan="3" class="bold">Student Information</td>
+              </tr>
+              <tr>
+                <td class="bold">Name (last, first MI)</td>
+                <td colspan="2">
+                    <input type="text" name="[01]last_name" value="" size="17" maxlength="20" id="lastName" READONLY>,
+                    <input type="text" name="[01]first_name" value="" size="17" maxlength="20" id="firstName" READONLY>
+                    <input type="text" name="[01]middle_name" value="" size="15" maxlength="15" id="middleName" READONLY></td>
+              </tr>
+			  <tr>
+                <td class="bold">Gen (Jr, III)</td>
+                <td colspan="2">					
+                    <input type="text" name="[01]NJ_GenerationCodeSuffix" value="" size="15" maxlength="5" id="generation" READONLY></td>
+              </tr>				  
+              <tr bgcolor="#edf3fe">
+                  <td class="bold">DOB</td>
+                  <td colspan="2"><input type="text" name="[01]dob" value="" size="11" onChange="checkDates('~(JSFieldParam;[01]dob)');"></td>
+              </tr>
+<tr class="~[evenoddrow]">
+    <td class="bold">Age</td>
+    <td  colspan="2">~(age)</td>
+</tr>
+<tr>
+                  <td class="bold">Gender</td>
+                  <td><select name="[01]gender" DISABLED>
+                      <option value="">
+                      <option value="M">Male
+                      <option value="F">Female
+                  </select></td>
+              </tr>
+<tr bgcolor="#edf3fe">
+                   <td class="bold">Grade Level</td>
+<td><select name="[01]grade_level" special="gradelevels" DISABLED><option></select></td>
+<td colspan="2"></td>
+              </tr>
+              <tr>
+                  <td class="bold">Student Number</td>
+                  <td><input type="text" name="[01]student_number" value="" size="13"READONLY></td>
+              </tr>
+              <tr>
+                  <td class="bold">Salesforce Number (NEN)</td>
+                  <td><input type="text" name="[U_DEF_EXT_STUDENTS]SALESFORCE_ID" value="" size="10" maxlength="10"></td>
+              </tr>
+              <tr bgcolor="#edf3fe">
+                  <td class="bold">Home phone</td>
+                  <td colspan="2"><input type="text" name="[01]home_phone" value="" size="17" READONLY></td>
+              </tr>
+           
+              <tr bgcolor="#edf3fe">
+                  <td class="bold">Full-Time Equivalency</td>
+<td colspan="2">~[tlist_sql;SELECT fte.name FROM Students s INNER JOIN FTE ON fte.id = s.fteid WHERE s.id = ~([Students]ID)]~(fte.name;t)[/tlist_sql]</td>
+</tr>              
+              <!--<tr>
+                <td class="bold">Shared Time</td>
+                <td><select name="[01]SHARED_TIME" DISABLED><option value>Select<option value="A">AM<option value="B">PM<option value="C"></select></td>
+              </tr>-->
+		<tr bgcolor="#edf3fe">
+                <td class="bold">Tuition Group</td>
+                <td colspan="2"><select name="[01]TUITION_CODE" DISABLED><option value="1">Regular<option value="2">Paid by a School District<option value="3">Paid by Parents<option value="4">Paid by State Institution or Other Agency<option value="5">Tuition-Free-Child of Teaching Staff Mem<option value="6">Tuition-Free-All Other Studs Exc.Code 4<option value="7">Formerly Parent Paid Now School choice</select></td>
+              </tr>
+		
+              
+              <tr bgcolor="#E8E8E8">
+                <td colspan="3" class="bold">Home Address</td>
+              </tr>
+              <tr bgcolor="#edf3fe">
+                <td class="subhead">Street, Apt/Suite</td>
+                <td colspan="2">
+                  <input type="text" name="[01]street" size="45" id="pstreet" value="" READONLY>
+                  <input type="text" name="" value="" size="10" id="papt" READONLY>
+                </td>
+              </tr>
+              <tr>
+                  <td class="subhead">City, State, Zip</td>
+                  <td>
+                      <input type="text" name="[01]city" value="" size="30" id="pcity" READONLY>
+                      <input type="text" name="[01]state" value="" size="2" id="pstate" READONLY>
+                      <input type="text" name="[01]zip" value="" size="10" id="pzip" READONLY>
+
+                      <input type="hidden" name="orig_street" value="~([01]street)" id="orig_pstreet">
+                      <input type="hidden" name="orig_city" value="~([01]city)" id="orig_pcity">
+                      <input type="hidden" name="orig_state" value="~([01]state)" id="orig_pstate">
+                      <input type="hidden" name="orig_zip" value="~([01]zip)" id="orig_pzip">
+                  </td>
+              </tr>
+             
+               <tr>
+
+                  <td class="bold">Homeroom</td>
+
+                  <td colspan="2">~[tlist_sql;
+
+                  
+
+                      SELECT DISTINCT sec.room, t.Last_Name, t.First_Name
+
+                      FROM Students s
+
+                        INNER JOIN cc ON cc.studentid = s.id
+
+                        INNER JOIN Sections sec ON sec.id = cc.sectionid
+
+                        INNER JOIN Courses c ON sec.course_number = c.course_number
+			
+			INNER JOIN Teachers t ON sec.teacher = t.id
+
+                      WHERE upper(c.course_name) LIKE '%HOMEROOM%'
+
+                        AND s.id=~([Students]ID)
+
+                        
+
+                        AND cc.dateleft >= to_date('~(f.currentdate)','MM/DD/YYYY')
+
+                        
+
+                    ]<b>Room:</b> ~(sec.room;t) <b>Teacher:</b> ~(t.Last_Name;t), ~(t.First_Name;t)<br> [/tlist_sql]</td><!--AND cc.dateenrolled <= to_date('~(f.currentdate)','MM/DD/YYYY')-->
+
+              </tr>
+<tr>
+                <td class="bold">Guidance Counselor&nbsp;</td>
+                <td>
+                  <select name="[01]GUIDANCE_COUNSELOR" DISABLED>
+		  <option value="">Select
+		~[tlist_sql;
+
+                  
+
+                      SELECT DISTINCT t.lastfirst, CASE WHEN '~([01]guidance_counselor)' = to_char(t.lastfirst) THEN 'SELECTED' ELSE NULL END value, t.Last_Name, t.First_Name
+		      FROM Teachers t, Students s
+		      WHERE t.SchoolID = ~(curschoolid)
+		      AND ps_customfields.getTeachersCF(t.id,'counselor') IS NOT NULL
+                        
+
+                    ]<option value="~(t.lastfirst;t)" ~(value;t)>~(t.Last_Name;t), ~(t.First_Name;t)[/tlist_sql]</select>
+
+</td>
+              </tr>
+              </tr>
+              
+              <tr bgcolor="#edf3fe">
+                <td class="bold">Classification</td>
+                <td colspan="2">
+                  <input type="text" name="[01]special_education" value="" size="13"READONLY></td>
+              </tr>
+              <tr>
+                <td class="bold">504</td>
+                <td colspan="2">
+					<input type="text" name="[01]504" value="" size="5" READONLY></td>
+				</td>
+              </tr>
+              <tr>
+                <td class="bold">I&RS</td>
+                <td colspan="2">
+					<input type="text" name="[01]IRS" value="" size="5" READONLY></td>
+				</td>
+              </tr>
+              <tr>
+                <td class="bold">LEP</td>
+                <td colspan="2">
+					<input type="text" name="[01]ELL" value="" size="5" READONLY></td>
+				</td>
+              </tr>
+              <tr>
+                <td class="bold">Homeless</td>
+                <td colspan="2">
+					<input type="text" name="[01]HOMELESS" value="" size="5" READONLY></td>
+				</td>
+              </tr>
+                            
+<tr>
+            <TD class=bold width="744" bgcolor="#FFFFFF" height="26" colspan="3">&nbsp;</TD>
+          </tr>
+              <tr bgcolor="#E8E8E8">
+                <td colspan="3" class="bold">PARENT/GUARDIAN CONTACT INFO</td>
+              </tr>
+<tr>
+            <TD class=bold colspan="3" width="744" bgcolor="#E8E8E8" height="26">&nbsp;PRIMARY PARENT/GUARDIAN</TD>
+          </tr>
+<tr>
+            <TD height="26" class=bold width="140" bgcolor="#EDF3FE">Name (First, Last)</TD>
+            <TD colspan="2" width="604" bgcolor="#EDF3FE" height="26"><input name="[01]cnt1_fname" type="text" id="[01]cnt1_fname" value="" size="20" READONLY> 
+              <input name="[01]cnt1_lname" type="text" id="[01]cnt1_lname" value="" size="30" READONLY> 
+          </tr>
+<tr>
+            <TD height="26" class=bold width="140" bgcolor="#EDF3FE">Relationship</TD>
+            <TD colspan="2" width="604" bgcolor="#EDF3FE" height="26"><select name="[01]cnt1_rel" id="[01]cnt1_rel" DISABLED>
+                <option value=""></option>
+                <option value="Mother">Mother</option>
+ 				<option value="Father">Father</option>
+ 				<option value="After School Care Provider">After School Care Provider</option>
+ 				<option value="Agency Representative">Agency Representative</option>
+ 				<option value="Aunt">Aunt</option>
+ 				<option value="Before School Care Provider">Before School Care Provider</option>
+ 				<option value="Brother">Brother</option>
+ 				<option value="Cousin">Cousin</option>
+ 				<option value="Foster Father">Foster Father</option>
+ 				<option value="Foster Mother">Foster Mother</option>
+ 				<option value="Friend">Friend</option>
+ 				<option value="Grandfather">Grandfather</option>
+ 				<option value="Grandmother">Grandmother</option>
+ 				<option value="Guardian">Guardian</option>
+ 				<option value="Husband">Husband</option>           
+				<option value="Legal Guardian">Legal Guardian</option>
+ 				<option value="Neighbor">Neighbor</option>
+ 				<option value="Nephew">Nephew</option>
+ 				<option value="Niece">Niece</option>
+ 				<option value="Self (Emancipated)">Self (Emancipated)</option>
+ 				<option value="Sister">Sister</option>
+ 				<option value="Sponsor">Sponsor</option>
+ 				<option value="StepBrother">Step Brother</option>
+ 				<option value="StepFather">Step Father</option>
+ 				<option value="StepMother">Step Mother</option>
+ 				<option value="StepSister">Step Sister</option>
+ 				<option value="Uncle">Uncle</option>
+ 				<option value="Wife">Wife</option>
+ 			</select>
+          </tr>
+<tr>
+            <TD height="26" class=bold width="140" bgcolor="#FFFFFF">Home Phone</TD>
+            <TD colspan="2" width="604" bgcolor="#FFFFFF" height="26"> <input name="[01]cnt1_hphone" type="text" id="[01]cnt1_hphone" value="" size="20" READONLY>
+              Work Phone 
+              <input name="[01]cnt1_WPhone" type="text" id="[01]cnt1_WPhone" value="" size="20" READONLY></TD>
+          </tr>
+<tr>
+            <TD class=bold width="140" bgcolor="#EDF3FE" height="26">Cell Phone</TD>
+            <TD colspan="2" width="604" bgcolor="#EDF3FE" height="26"> <input name="[01]cnt1_cphone" type="text" id="[01]cnt1_cphone" value="" size="20" READONLY>
+              eMail 
+              <input name="[01]cnt1_email" type="text" id="[01]cnt1_email" value="" size="40" READONLY></TD>
+          </tr>
+<tr>
+            <TD class=bold width="140" bgcolor="#FFFFFF" height="26">Street</TD>
+            <TD colspan="2" width="604" bgcolor="#FFFFFF" height="26"><input name="[01]cnt1_street" type="text" id="[01]cnt1_street" value="" size="70" READONLY></TD>
+          </tr>
+<tr>
+            <TD class=bold width="140" bgcolor="#EDF3FE" height="26">City, State Zip</TD>
+            <TD colspan="2" width="604" bgcolor="#EDF3FE" height="26">
+            <input name="[01]cnt1_city" type="text" id="[01]cnt1_city" value="" size="27" READONLY> 
+              <input name="[01]cnt1_state" type="text" id="[01]cnt1_state" value="" size="3" READONLY> 
+              <input name="[01]cnt1_zip" type="text" id="[01]cnt1_zip" value="" size="10" READONLY> 
+            </TD>
+          </tr>
+<tr>
+            <!--<TD class=bold width="140" bgcolor="#EDF3FE" height="26"></TD>
+            <TD width="150" bgcolor="#EDF3FE" height="26">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </TD>-->
+            <TD width="454" bgcolor="#EDF3FE" height="26" colspan=7><b>Has Custody</b>&nbsp;&nbsp;Yes&nbsp; 
+              <input name="[01]cnt1_custody" type="checkbox" id="[01]cnt1_custody" value="1" DISABLED></TD>
+          </tr>
+
+
+
+
+<tr>
+            <TD class=bold width="744" bgcolor="#FFFFFF" height="26" colspan="3">&nbsp;</TD>
+          </tr>
+<tr>
+            <TD class=bold colspan="3" width="745" bgcolor="#E8E8E8" height="26">SECONDARY PARENT/GUARDIAN</TD>
+          </tr>
+<tr>
+            <TD height="26" class=bold width="140" bgcolor="#EDF3FE">Name (First, Last)</TD>
+            <TD colspan="2" width="604" bgcolor="#EDF3FE" height="26"><input name="[01]cnt2_fname" type="text" id="[01]cnt2_fname" value="" size="20" READONLY> 
+              <input name="[01]cnt2_lname" type="text" id="[01]cnt2_lname" value="" size="30" READONLY>
+          </tr>
+<tr>
+            <TD height="26" class=bold width="140" bgcolor="#EDF3FE">Relationship</TD>
+            <TD colspan="2" width="604" bgcolor="#EDF3FE" height="26">
+              <select name="[01]cnt2_rel" id="[01]cnt2_rel" DISABLED>
+                <option value=""></option>
+                <option value="Mother">Mother</option>
+ 				<option value="Father">Father</option>
+ 				<option value="After School Care Provider">After School Care Provider</option>
+ 				<option value="Agency Representative">Agency Representative</option>
+ 				<option value="Aunt">Aunt</option>
+ 				<option value="Before School Care Provider">Before School Care Provider</option>
+ 				<option value="Brother">Brother</option>
+ 				<option value="Cousin">Cousin</option>
+ 				<option value="Foster Father">Foster Father</option>
+ 				<option value="Foster Mother">Foster Mother</option>
+ 				<option value="Friend">Friend</option>
+ 				<option value="Grandfather">Grandfather</option>
+ 				<option value="Grandmother">Grandmother</option>
+ 				<option value="Guardian">Guardian</option>
+ 				<option value="Husband">Husband</option>
+                                <option value="Legal Guardian">Legal Guardian</option>
+ 				<option value="Neighbor">Neighbor</option>
+ 				<option value="Nephew">Nephew</option>
+ 				<option value="Niece">Niece</option>
+ 				<option value="Self (Emancipated)">Self (Emancipated)</option>
+ 				<option value="Sister">Sister</option>
+ 				<option value="Sponsor">Sponsor</option>
+ 				<option value="StepBrother">Step Brother</option>
+ 				<option value="StepFather">Step Father</option>
+ 				<option value="StepMother">Step Mother</option>
+ 				<option value="StepSister">Step Sister</option>
+ 				<option value="Uncle">Uncle</option>
+ 				<option value="Wife">Wife</option>
+              </select>
+          </tr>
+<tr>
+            <TD class=bold width="140" height="26">Home Phone</TD>
+            <TD colspan="2" width="604" height="26"> <input name="[01]cnt2_hphone" type="text" id="[01]cnt2_hphone" value="" size="20" READONLY>
+              Work Phone 
+              <input name="[01]cnt2_WPhone" type="text" id="[01]cnt2_WPhone" value="" size="20" READONLY></TD>
+          </tr>
+<tr>
+            <TD class=bold width="140" bgcolor="#EDF3FE" height="26">Cell Phone</TD>
+            <TD colspan="2" width="604" bgcolor="#EDF3FE" height="26"> <input name="[01]cnt2_cphone" type="text" id="[01]cnt2_cphone" value="" size="20" READONLY>
+              eMail 
+              <input name="[01]cnt2_email" type="text" id="[01]cnt2_email" value="" size="40" READONLY></TD>
+          </tr>
+<tr>
+            <TD class=bold width="140" height="26">Street</TD>
+            <TD colspan="2" width="604" height="26"><input name="[01]cnt2_street" type="text" id="[01]cnt2_street" value="" size="70" READONLY></TD>
+          </tr>
+<tr>
+            <TD class=bold width="140" bgcolor="#EDF3FE" height="26">City, State Zip</TD>
+            <TD colspan="2" width="604" bgcolor="#EDF3FE" height="26">
+            <input name="[01]cnt2_city" type="text" id="[01]cnt2_city" value="" size="27" READONLY>
+              <input name="[01]cnt2_state" type="text" id="[01]cnt2_state" value="" size="3" READONLY> 
+              <input name="[01]cnt2_zip" type="text" id="[01]cnt2_zip" value="" size="10" READONLY> 
+            </TD>
+          </tr>
+<tr>
+            <!--<TD class=bold width="140" bgcolor="#EDF3FE" height="26"></TD>
+            <TD width="200" bgcolor="#EDF3FE" height="26">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </TD>-->
+            <TD width="404" bgcolor="#EDF3FE" height="26" colspan=7><b>Has Custody</b>&nbsp;&nbsp;&nbsp; 
+            Yes 
+              <input name="[01]cnt2_custody" type="checkbox" id="[01]cnt2_custody" value="1" DISABLED></TD>
+          </tr>
+
+
+<tr>
+            <TD class=bold width="744" bgcolor="#FFFFFF" height="26" colspan="3">&nbsp;</TD>
+          </tr>
+<tr>
+            <TD class=bold colspan="3" width="744" bgcolor="#E8E8E8" height="26">THIRD CONTACT</TD>
+          </tr>
+<tr>
+            <TD height="26" class=bold width="140" bgcolor="#EDF3FE"> Name (First, Last)</TD>
+            <TD colspan="2" width="604" bgcolor="#EDF3FE" height="26"><input name="[01]cnt3_fname" type="text" id="[01]cnt3_fname" value="" size="20" READONLY> 
+              <input name="[01]cnt3_lname" type="text" id="[01]cnt3_lname" value="" size="30" READONLY>
+
+          </tr>
+<tr>
+            <TD height="26" class=bold width="140" bgcolor="#EDF3FE">Relationship</TD>
+            <TD colspan="2" width="604" bgcolor="#EDF3FE" height="26">
+              <select name="[01]cnt3_rel" id="select5" DISABLED>
+                <option value=""></option>
+                <option value="Mother">Mother</option>
+ 				<option value="Father">Father</option>
+ 				<option value="After School Care Provider">After School Care Provider</option>
+ 				<option value="Agency Representative">Agency Representative</option>
+ 				<option value="Aunt">Aunt</option>
+ 				<option value="Before School Care Provider">Before School Care Provider</option>
+ 				<option value="Brother">Brother</option>
+ 				<option value="Cousin">Cousin</option>
+ 				<option value="Foster Father">Foster Father</option>
+ 				<option value="Foster Mother">Foster Mother</option>
+ 				<option value="Friend">Friend</option>
+ 				<option value="Grandfather">Grandfather</option>
+ 				<option value="Grandmother">Grandmother</option>
+ 				<option value="Guardian">Guardian</option>
+ 				<option value="Husband">Husband</option>
+                                <option value="Legal Guardian">Legal Guardian</option>
+ 				<option value="Neighbor">Neighbor</option>
+ 				<option value="Nephew">Nephew</option>
+ 				<option value="Niece">Niece</option>
+ 	 			<option value="Self (Emancipated)">Self (Emancipated)</option>
+ 				<option value="Sister">Sister</option>
+ 				<option value="Sponsor">Sponsor</option>
+ 				<option value="StepBrother">Step Brother</option>
+ 				<option value="StepFather">Step Father</option>
+ 				<option value="StepMother">Step Mother</option>
+ 				<option value="StepSister">Step Sister</option>
+ 				<option value="Uncle">Uncle</option>
+ 				<option value="Wife">Wife</option>
+              </select>
+          </tr>
+<tr>
+            <TD class=bold width="140" height="26">Home Phone</TD>
+            <TD colspan="2" width="604" height="26"> <input name="[01]cnt3_hphone" type="text" id="[01]cnt3_hphone" value="" size="20" READONLY>
+              Work Phone 
+              <input name="[01]cnt3_wphone" type="text" id="[01]cnt1_wphone3" value="" size="20" READONLY></TD>
+          </tr>
+<tr>
+            <TD class=bold width="140" bgcolor="#EDF3FE" height="26">Cell Phone</TD>
+            <TD colspan="2" width="604" bgcolor="#EDF3FE" height="26"> <input name="[01]cnt3_cphone" type="text" id="[01]cnt3_cphone" value="" size="20" READONLY>
+              eMail 
+              <input name="[01]cnt3_email" type="text" id="[01]cnt3_email" value="" size="40" READONLY></TD>
+          </tr>
+<tr>
+            <TD class=bold width="140" height="26">Street</TD>
+            <TD colspan="2" width="604" height="26"><input name="[01]cnt3_street" type="text" id="[01]cnt3_street" value="" size="70" READONLY></TD>
+          </tr>
+<tr>
+            <TD class=bold width="140" bgcolor="#EDF3FE" height="26">City, State Zip</TD>
+            <TD colspan="2" width="604" bgcolor="#EDF3FE" height="26">
+            <input name="[01]cnt3_city" type="text" id="[01]cnt3_city" value="" size="27" READONLY>
+              <input name="[01]cnt3_state" type="text" id="[01]cnt1_state3" value="" size="3" READONLY> 
+              <input name="[01]cnt3_zip" type="text" id="[01]cnt1_zip3" value="" size="10" READONLY> 
+            </TD>
+          </tr>
+
+<tr>
+            <!--<TD class=bold width="140" bgcolor="#EDF3FE" height="26"></TD>
+            <TD width="200" bgcolor="#EDF3FE" height="26">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </TD>-->
+            <TD width="404" bgcolor="#EDF3FE" height="26" colspan=7><b>Has Custody</b>&nbsp;&nbsp;&nbsp; 
+            Yes 
+              <input name="[01]cnt3_custody" type="checkbox" id="[01]cnt3_custody" value="1" DISABLED></TD>
+          </tr>
+
+</td>
+
+            </table>
+
+
+
+            <br>
+</div>  
+      <br>~[wc:admin_footer_frame_css]
+    </form>
+  </body>
+</html>

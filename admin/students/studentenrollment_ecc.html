@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Enrollment</title>
+      ~[wc:commonscripts]
+<link href="/images/css/screen.css" rel="stylesheet" media="screen">
+<link href="/images/css/print.css" rel="stylesheet" media="print">
+  </head>
+  <body>
+    <form action="/admin/changesrecorded.white.html" method="POST">~[wc:admin_header_frame_css]
+      <a href="/admin/home.html">Start Page</a> &gt;
+      <a>Student Selection</a> &gt; Student Enrollment~[wc:admin_navigation_frame_css]~[wc:title_student_begin_css]Student Enrollment~[wc:title_student_end_css]
+      <br>
+
+            <!---start of content-->
+<div class="box-round">
+            <table>
+              <tr bgcolor="#E8E8E8">
+                <td colspan="3" class="bold">School:&nbsp;&nbsp;&nbsp;&nbsp;~([39]name)&nbsp;&nbsp;-&nbsp;&nbsp;~([39]school_number)</td>
+              </tr>
+              <tr bgcolor="#edf3fe">
+                <td colspan="3" class="bold">Student Information</td>
+              </tr>
+              <tr>
+                <td class="bold">Name (last, first MI)</td>
+                <td colspan="2">
+                    <input type="text" name="[01]last_name" value="" size="17" maxlength="20" id="lastName">,
+                    <input type="text" name="[01]first_name" value="" size="17" maxlength="20" id="firstName">
+                    <input type="text" name="[01]middle_name" value="" size="15" maxlength="15" id="middleName"></td>
+              </tr>
+			  <tr>
+                <td class="bold">Gen (Jr, III)</td>
+                <td colspan="2">					
+                    <input type="text" name="[01]NJ_GenerationCodeSuffix" value="" size="15" maxlength="5" id="generation"></td>
+              </tr>			  
+              <tr bgcolor="#edf3fe">
+                  <td class="bold">DOB</td>
+                  <td colspan="2"><input type="text" name="[01]dob" value="" size="11" onChange="checkDates('~(JSFieldParam;[01]dob)');"></td>
+              </tr>
+<tr class="~[evenoddrow]">
+    <td class="bold">Age</td>
+    <td  colspan="2">~(age)</td>
+</tr>
+<tr>
+                  <td class="bold">Gender</td>
+                  <td><select name="[01]gender">
+                      <option value="">
+                      <option value="M">Male
+                      <option value="F">Female
+                  </select></td>
+              </tr>
+<tr bgcolor="#edf3fe">
+                    <td class="bold">Grade Level</td>
+<td><select name="[01]grade_level" special="gradelevels"><option></select></td>
+<td colspan="2"></td>
+              </tr>
+              <tr>
+                  <td class="bold">Student Number</td>
+                  <td><input type="text" name="[01]student_number" value="" size="13"READONLY></td>
+              </tr>
+              <tr>
+                  <td class="bold">Salesforce Number (NEN)</td>
+                  <td><input type="text" name="[U_DEF_EXT_STUDENTS]SALESFORCE_ID" value="" size="10" maxlength="10"></td>
+              </tr>
+              <tr bgcolor="#edf3fe">
+                  <td class="bold">Home phone</td>
+                  <td colspan="2"><input type="text" name="[01]home_phone" value="" size="17"></td>
+              </tr>
+	      <tr>
+                  <td class="bold">Registration Date</td>
+                  <td><input type="text" name="[01]RegistrationDate" value="" size="11" onChange="checkDates('~(JSFieldParam;[01]entrydate)');"></td>
+              </tr>
+              <tr bgcolor="#edf3fe">
+                  <td class="bold">Enrollment Date</td>
+                  <td colspan="2"><input type="text" name="[01]entrydate" value="" size="11" onChange="checkDates('~(JSFieldParam;[01]entrydate)');"></td>
+              </tr>
+		<tr>
+			<td class="bold">Entry Code</td>
+			<td><select name="[01]entrycode" special="lists.entrycodes"><option></select></td>
+		</tr>
+              <tr bgcolor="#edf3fe">
+                  <td class="bold"></td>
+                  <td colspan="2">The following date fields will be automatically filled by your system administrator</td>
+              </tr>
+              <tr bgcolor="#edf3fe">
+                  <td class="bold">Original Entry Date</td>
+                  <td colspan="2"><input type="text" name="[01]OrigEntryDate" value="" size="11" READONLY> Date of original entry into the district <font color=red>Read Only</font></td>
+              </tr>
+              <tr bgcolor="#edf3fe">
+                  <td class="bold">District Entry Date</td>
+                  <td colspan="2"><input type="text" name="[01]DistrictEntryDate" value="" size="11" READONLY> Date of most recent re-entry into the district <font color=red>Read Only</font></td>
+              </tr>
+              <tr>
+                  <td class="bold">School Entry Date</td>
+                  <td><input type="text" name="[01]SchoolEntryDate" value="" size="11" READONLY> Date of entry into current school <font color=red>Read Only</font></td>
+              </tr>
+              <tr bgcolor="#edf3fe">
+                  <td class="bold">Full-Time Equivalency</td>
+<td colspan="2">~[tlist_sql;SELECT fte.name FROM Students s INNER JOIN FTE ON fte.id = s.fteid WHERE s.id = ~([Students]ID)]~(fte.name;t)[/tlist_sql]</td>
+</tr>              
+              <!--<tr>
+                <td class="bold">Shared Time</td>
+                <td><select name="[01]SHARED_TIME"><option value>Select<option value="A">AM<option value="B">PM<option value="C"></select></td>
+              </tr>-->
+	      <!--<tr>
+                <td class="bold">Tuition Group</td>
+                <td colspan="2"><select name="[01]TUITION_CODE"><option value="1">Regular<option value="2">Paid by a School District<option value="3">Paid by Parents<option value="4">Paid by State Institution or Other Agency<option value="5">Tuition-Free-Child of Teaching Staff Mem<option value="6">Tuition-Free-All Other Studs Exc.Code 4<option value="7">Formerly Parent Paid Now School choice</select></td>
+              </tr>-->
+	      <tr>
+            	<td class="bold" colspan="3">Received early intervention services?&nbsp<input type="checkbox" name="[01]EarlyIntervention" value="1"></td>
+              </tr>
+              <tr bgcolor="#E8E8E8">
+                <td colspan="3" class="bold">Home Address</td>
+              </tr>
+              <tr bgcolor="#edf3fe">
+                <td class="subhead">Street, Apt/Suite</td>
+                <td colspan="2">
+                  <input type="text" name="[01]street" size="45" id="pstreet" value="">
+                  <!--<input type="text" name="" value="" size="10" id="papt">-->
+                </td>
+              </tr>
+              <tr>
+                  <td class="subhead">City, State, Zip</td>
+                  <td>
+                      <input type="text" name="[01]city" value="" size="30" id="pcity">
+                      <input type="text" name="[01]state" value="" size="2" id="pstate">
+                      <input type="text" name="[01]zip" value="" size="10" id="pzip">
+
+                      <input type="hidden" name="orig_street" value="~([01]street)" id="orig_pstreet">
+                      <input type="hidden" name="orig_city" value="~([01]city)" id="orig_pcity">
+                      <input type="hidden" name="orig_state" value="~([01]state)" id="orig_pstate">
+                      <input type="hidden" name="orig_zip" value="~([01]zip)" id="orig_pzip">
+                  </td>
+              </tr>
+             
+               <tr>
+
+                  <td class="bold">Homeroom</td>
+
+                  <td colspan="2">~[tlist_sql;
+
+                  
+
+                      SELECT DISTINCT sec.room, t.Last_Name, t.First_Name
+
+                      FROM Students s
+
+                        INNER JOIN cc ON cc.studentid = s.id
+
+                        INNER JOIN Sections sec ON sec.id = cc.sectionid
+
+                        INNER JOIN Courses c ON sec.course_number = c.course_number
+			
+			INNER JOIN Teachers t ON sec.teacher = t.id
+
+                      WHERE upper(c.course_name) LIKE '%HOMEROOM%'
+
+                        AND s.id=~([Students]ID)
+
+                        
+
+                        AND cc.dateleft >= to_date('~(f.currentdate)','MM/DD/YYYY')
+
+                        
+
+                    ]<b>Room:</b> ~(sec.room;t) <b>Period:</b> ~(sec.expression;t) <b>Teacher:</b> ~(t.Last_Name;t), ~(t.First_Name;t)<br> [/tlist_sql]</td><!--AND cc.dateenrolled <= to_date('~(f.currentdate)','MM/DD/YYYY')-->
+
+              </tr>
+
+              
+<tr>
+                  <td class="bold">Graduation Year</td>
+                  <td colspan="2"><input type="text" name="[01]graduation_year" value="" size="5"></td>
+              </tr>
+	      <tr bgcolor="#edf3fe">
+	      <td class="bold">Lunch status</td>
+	      <td colspan="2"><!--<select name="[01]lunchstatus"><option value=" ">(no status)<option value="P">Full pay (P)<option value="R">Reduced (R)<option value="F">Free (F)<option value="E">Exempt (E)<option value="T">Temporary (T)<option value="FDC">Free-DC (FDC)</select>-->This field has been removed by order of the superintendant's office</td>
+	      </tr>
+	      <tr>
+                <td class="bold">LAU Code</td>
+                  <td colspan="2"><select name="[01]LEP_LAU_CODE">
+                    <option value="E">E-English Only
+                    <option value="A">A-Mono/Non-Elig
+                    <option value="B">B-Predom Non-Elig
+                    <option value="C">C-Bilingual
+                    <option value="D">D-Predom Eng
+                    <option value="M">M-Non Standard Eng</select></td>
+              </tr>
+              <tr bgcolor="#edf3fe">
+                <td class="bold">IS <font color=red>(now accurate!)</font></td>
+                <td colspan="2"><input type="text" value="
+~[tlist_sql;
+SELECT 
+To_Char(gen.valuet2) SPProgCode
+FROM spenrollments sp
+LEFT OUTER JOIN schools sch ON sp.schoolid = sch.school_number
+LEFT OUTER JOIN students s ON sp.studentid = s.id
+LEFT OUTER JOIN gen ON sp.programid=gen.id
+WHERE sp.exit_date > sysdate
+AND sp.enter_date < sysdate
+AND s.id=~([Students]ID)
+]
+~(SPProgCode;t)
+[/tlist_sql]
+" size="13"READONLY>&nbsp;<b>Classification</b>&nbsp;&nbsp;
+                  <input type="text" name="[01]special_education" value="" size="13"READONLY>&nbsp;
+    
+              </tr>
+              <tr>
+                <td class="bold">504</td>
+                <td colspan="2">
+					<input type="text" name="[01]504" value="" size="5" READONLY></td>
+				</td>
+              </tr>
+              <tr>
+                <td class="bold">I&RS</td>
+                <td colspan="2">
+					<input type="text" name="[01]IRS" value="" size="5" READONLY></td>
+				</td>
+              </tr>
+              <tr>
+                <td class="bold">LEP</td>
+                <td colspan="2">
+					<input type="text" name="[01]ELL" value="" size="5" READONLY></td>
+				</td>
+              </tr>
+              <tr>
+                <td class="bold">Homeless</td>
+                <td colspan="2">
+					<input type="text" name="[01]HOMELESS" value="" size="5" READONLY></td>
+				</td>
+              </tr>
+
+              <tr bgcolor="#E8E8E8">
+                <td colspan="3" class="bold">STATE MANDATED DATA</td>
+              </tr>
+
+              <tr bgcolor="#edf3fe">
+                  <td colspan="3" class="bold">Federal Ethnicity and Race</td>
+              </tr>
+              <tr>
+              	<td class="subhead">Ethnicity</td>
+              	<td>
+              		<div>
+              			<label>Is the student Hispanic or Latino?</label>
+              			<input id="defaultEthnicity" type="hidden" name="[01]FedEthnicity" value="-1">~[Comment:Note that the onload javascript will revert this back to -1 after it's been changed to whatever is currently in the DB.]
+              			<div class="choicefloat"><input type="radio" name="[01]FedEthnicity" value="1">Yes</div>
+              			<div class="choicefloat"><input type="radio" name="[01]FedEthnicity" value="0">No</div>
+              			~[if.pref.FRE_AllowDeclineEthnicity=1]<div class="choicefloat"><span class="declined"><input type="radio" name="[01]FedEthnicity" value="2">~[pref:FRE_DeclineEthnicityText]</span></div>[/if]
+              			<div class=clearit><!-- --></div>
+              		</div>
+              	</td>
+              </tr>
+              <tr bgcolor="#edf3fe">
+
+                  <td class="subhead">Race</td>
+
+                  <td colspan="2"><input type="hidden" name="SaveRace" value="1"><input type="hidden" name="[01]FedRaceDecline" id="r_none_storage" value="0"><!-- See 'decline_race' function in raceselection_block.ftl -->
+
+                 ~[brij_renderform:federalrace;:GetStudentRaceSelectionBlock]
+
+               </td>
+
+              </tr>
+
+              <tr>
+                <td class="subhead">Scheduling/Reporting Ethnicity</td>
+                <td>
+        			     <select id="primaryethnicity" name="[01]ethnicity" special="lists.ethnicity">
+        	           <option>
+        	         </select>
+        	     </td>
+              </tr>
+              <tr bgcolor="#edf3fe">
+                  <td  class="bold">State ID Number (SID)</td>
+                  <td><input type="text" name="[01]State_StudentNumber" value="" size="13"></td>
+<td colspan="2"></td>
+              </tr>
+              <tr>
+          		  <td class="bold">City of Birth</td>
+          		  <td>
+            			<input type="text" name="[Students]NJ_CityOfBirth" value="" size="30"> (Mandatory if born in USA)
+            		</td>
+
+              </tr>
+
+            	<tr bgcolor="#edf3fe">
+		<td class="bold">State of Birth</td>
+<td colspan="2">
+<select name="[01]NJ_StateOfBirth"><option><option value="">(Not born in USA) or Non-Public<option value="AL">AL - Alabama<option value="AK">AK - Alaska<option value="AS">AS - American Samoa<option value="AZ">AZ - Arizona<option value="AR">AR - Arkansas<option value="CA">CA - California<option value="CO">CO - Colorado<option value="CT">CT - Connecticut<option value="DE">DE - Delaware<option value="DC">DC - District of Columbia<option value="FM">FM - Federated States of Micronesia<option value="FL">FL - Florida<option value="GA">GA - Georgia<option value="GU">GU - Guam<option value="HI">HI - Hawaii<option value="ID">ID - Idaho<option value="IL">IL - Illinois<option value="IN">IN - Indiana<option value="IA">IA - Iowa<option value="KS">KS - Kansas<option value="KY">KY - Kentucky<option value="LA">LA - Louisiana<option value="ME">ME - Maine<option value="MH">MH - Marshall Islands<option value="MD">MD - Maryland<option value="MA">MA - Massachusetts<option value="MI">MI - Michigan<option value="MN">MN - Minnesota<option value="MS">MS - Mississippi<option value="MO">MO - Missouri<option value="MT">MT - Montana<option value="NE">NE - Nebraska<option value="NV">NV - Nevada<option value="NH">NH - New Hampshire<option value="NJ">NJ - New Jersey<option value="NM">NM - New Mexico<option value="NY">NY - New York<option value="NC">NC - North Carolina<option value="ND">ND - North Dakota<option value="MP">MP - Northern Marian Islands<option value="OH">OH - Ohio<option value="OK">OK - Oklahoma<option value="OR">OR - Oregon<option value="PW">PW - Palau<option value="PA">PA - Pennsylvania<option value="PR">PR - Puerto Rico<option value="RI">RI - Rhode Island<option value="SC">SC - South Carolina<option value="SD">SD - South Dakota<option value="TN">TN - Tennessee<option value="TX">TX - Texas<option value="UT">UT - Utah<option value="VT">VT - Vermont<option value="VI">VI - Virgin Islands<option value="VA">VA - Virginia<option value="WA">WA - Washington<option value="WV">WV - West Virginia<option value="WI">WI - Wisconsin<option value="WY">WY - Wyoming<option value="AE">AE - Armed Forces - Africa, Canada, Europe Middle East<option value="AA">AA - Armed Forces - Americas (except Canada)<option value="AP">AP - Armed Forces - Pacific</select>  (Mandatory if born in USA)
+</td>
+<td></td>
+	</tr>            	
+<tr>
+                <td colspan="3" class="bold"><font color=red>* If not born in USA please fill in Country of Birth not City/State of Birth</font></td>
+              </tr>
+            	<tr>
+            		<td class="bold">Country of Birth</td>
+                <td>
+                  ~[x:insertfile;/admin/students/State/usa_nj/PopupMenus/NJ_S_CountryCodes.html]
+
+                </td>
+              </tr>
+
+                            <tr bgcolor="#edf3fe">
+                <td class="bold">Proof of Age</td>
+                <td colspan="2"><select name="[01]Birth_Verification_Document"><option value>Select<option value="1">Birth certificate<option value="2">Baptismal Certificate<option value="3">Passport<option value="4">Parent Affidavit</select></td>
+              </tr>
+
+              <tr>
+            		<td class="bold">Proof of Residency</td>
+                <td colspan="2">
+                  <input type="checkbox" name="[01]Proof_Of_Residency" value="1">&nbsp</td>
+              </tr>
+		<tr bgcolor="#edf3fe">
+                <td class="bold">Insured</td>
+                <td colspan="2"><input type="text" name="[Students]Insured" value="" size="30" READONLY></td>
+              </tr>
+
+              <tr>
+            		<td class="bold">Allow Disclosure</td>
+                <td colspan="2">
+                  <input type="text" name="[Students]Insured_Allow_Disclosure" value="" size="30" READONLY></td>
+              </tr>
+<tr>
+            <TD class=bold width="744" bgcolor="#FFFFFF" height="26" colspan="3">&nbsp;</TD>
+          </tr>
+              <tr bgcolor="#E8E8E8">
+                <td colspan="3" class="bold">PARENT/GUARDIAN CONTACT INFO</td>
+              </tr>
+~[x:insertfile;studentpages/parentinfo2/ParentCnt1.html]
+<tr>
+                  <td class="bold">Parent/Guardian Birthplace</td>
+                  <td><input type="text" name="[01]cnt1_birthplace" value="" size="13"READONLY></td>
+              </tr>
+~[x:insertfile;studentpages/parentinfo2/ParentCnt2.html]
+<tr>
+                  <td class="bold">Parent/Guardian Birthplace</td>
+                  <td><input type="text" name="[01]cnt2_birthplace" value="" size="13"READONLY></td>
+              </tr>
+~[x:insertfile;studentpages/parentinfo2/ParentCnt3.html]
+</td>
+              <tr>
+                <td colspan="3" class="bold">&nbsp;</td>
+              </tr>
+
+              <tr bgcolor="#E8E8E8">
+                <td colspan="3" class="bold">EMERGENCY CONTACTS</td>
+              </tr>
+              
+              <tr>
+                <td colspan="3" class="bold">&nbsp;</td>
+              </tr>
+
+<tr bgcolor="#edf3fe">
+<td class="bold" rowspan="2">Contact #1</td>
+<td>Contact Name (last, first)<br><input type="text" name="[01]Emerg_Contact_1" value="" size="25"></td>
+<td>Relationship<br><select name="[01]Emerg_1_Rel"><option><option value="Aunt">Aunt<option value="Brother">Brother<option value="Father">Father<option value="Friend">Friend<option value="Grandfather">Grandfather<option value="Grandmother">Grandmother<option value="Mother">Mother<option value="Neighbor">Neighbor<option value="Other">Other<option value="Sister">Sister<option value="Uncle">Uncle</select></td>
+</tr>
+<tr bgcolor="#edf3fe">
+<td>Phone<br><input type="text" name="[01]Emerg_Phone_1" value="" size="15"></td>
+<td>Phone Type<br><select name="[01]Emerg_1_Ptype"><option><option value="Cell">Cell<option value="Home">Home<option value="Work">Work</select></td>
+</tr>
+<tr>
+<td class="bold" rowspan="2">Contact #2</td>
+<td>Contact Name (last, first)<br><input type="text" name="[01]Emerg_Contact_2" value="" size="25"></td>
+<td>Relationship<br><select name="[01]Emerg_2_Rel"><option><option value="Aunt">Aunt<option value="Brother">Brother<option value="Father">Father<option value="Friend">Friend<option value="Grandfather">Grandfather<option value="Grandmother">Grandmother<option value="Mother">Mother<option value="Neighbor">Neighbor<option value="Other">Other<option value="Sister">Sister<option value="Uncle">Uncle</select></td>
+</tr>
+<tr>
+<td>Phone<br><input type="text" name="[01]Emerg_Phone_2" value="" size="15"></td>
+<td>Phone Type<br><select name="[01]Emerg_2_Ptype"><option><option value="Cell">Cell<option value="Home">Home<option value="Work">Work</select></td>
+</tr>
+<tr bgcolor="#edf3fe">
+<td class="bold" rowspan="2">Contact #3</td>
+<td>Contact Name (last, first)<br><input type="text" name="[01]Emerg_Contact_3" value="" size="25"></td>
+<td>Relationship<br><select name="[01]Emerg_3_Rel"><option><option value="Aunt">Aunt<option value="Brother">Brother<option value="Father">Father<option value="Friend">Friend<option value="Grandfather">Grandfather<option value="Grandmother">Grandmother<option value="Mother">Mother<option value="Neighbor">Neighbor<option value="Other">Other<option value="Sister">Sister<option value="Uncle">Uncle</select></td>
+</tr>
+<tr bgcolor="#edf3fe">
+<td>Phone<br><input type="text" name="[01]Emerg_3_Phone" value="" size="15"></td>
+<td>Phone Type<br><select name="[01]Emerg_3_Ptype"><option><option value="Cell">Cell<option value="Home">Home<option value="Work">Work</select></td>
+</tr>
+
+<tr>
+          <td class="bold">How did you hear about this preschool program?</td>
+          <td colspan="2">
+          <input type="checkbox" name="[01]ECCReferral" value="Director/Family Worker">Director/Family Worker&nbsp;&nbsp;
+          <input type="checkbox" name="[01]ECCReferral" value="Bus ad">Bus ad&nbsp;&nbsp;
+	  <input type="checkbox" name="[01]ECCReferral" value="Train ad">Train ad<br>
+	  <input type="checkbox" name="[01]ECCReferral" value="TV ad">TV ad&nbsp;&nbsp;
+          <input type="checkbox" name="[01]ECCReferral" value="Friend">Friend&nbsp;&nbsp;
+	  <input type="checkbox" name="[01]ECCReferral" value="Festival">Festival<br>
+	  Other <input type="text" name="[01]ECCReferral" value="" size="15">
+          </td>
+</tr>
+
+<tr bgcolor="#edf3fe">
+          <td class="bold">Nurse's Approval</td>  <td colspan="2"><input type="checkbox" name="[01]NurseApproval" value="1"></td>
+</tr>
+
+
+            </table>
+
+
+
+            <br>
+<div class="button-row"><input type="hidden" name="ac" value="prim">~[submitbutton]</div>
+</div>
+      <br>~[wc:admin_footer_frame_css]
+    </form>
+  </body>
+</html>
